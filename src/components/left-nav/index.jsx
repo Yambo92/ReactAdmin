@@ -34,7 +34,7 @@ export const LeftNav = () => {
                 const cItem = item.children.find(cItem => cItem.key === path)
                 //如果cItem存在说明当前item对应的子列表需要展开
                 if(cItem){
-                   // setSelectedItem(item.key)
+                    openKey = item.key;
                 }
                 return (
                     <SubMenu
