@@ -1,0 +1,25 @@
+@mixin flexCenter($direction:row, $justify:center, $align:center){
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-direction: $direction;
+}
+
+.left-nav{
+    .left-nav-header{
+        height: 80px;
+        background-color: #002140;
+        @include flexCenter(row, flex-start);
+        img{
+            width: 40px;
+            height: 40px;
+            margin: 0 15px;
+        }
+        h1{
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+    }
+    
+}
