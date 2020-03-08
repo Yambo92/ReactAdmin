@@ -24,7 +24,7 @@ const Header = () => {
     const [weather, setWeather] = useState('');//天气文本
     const username = memoryUtils.user.username;
     const getWeather = async () => {
-        const {dayPictureUrl, weather} = await reqWeather('武汉');
+        const {dayPictureUrl, weather} = await reqWeather('南阳');
         setDayPicture(dayPictureUrl)
         setWeather(weather)
     }

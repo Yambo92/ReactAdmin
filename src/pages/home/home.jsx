@@ -3,11 +3,13 @@
 */ 
 
 import React from 'react'
-
+import './index.scss'
 export const Home = () => {
 
     return(
-        <div>Home</div>
+        <div className="home">
+            欢迎使用后台管理系统
+        </div>
     )
 }
 

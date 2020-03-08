@@ -50,4 +50,19 @@ export const reqWeather = (city) => {
 	
 }
 
-// reqWeather('武汉')
+/*
+商品分类
+*/ 
+/*
+获取分类列表
+*/ 
+export const reqCategorys = (parentId) => ajax('/manage/category/list', {parentId}, 'GET')
+
+/* 添加分类 */ 
+export const reqAddCategory = (parentId, categoryName) => ajax('/manage/category/add', {parentId, categoryName}, 'POST')
+
+/* 更新分类 */ 
+export const reqUpdateCategory = (categoryId, categoryName) => ajax('/manage/category/update', {categoryId, categoryName}, 'POST')
+
+/* 根据ID查找分类 */ 
+export const reqFindCategory = (categoryId) => ajax('/manage/category/info', {categoryId})
