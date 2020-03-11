@@ -9,7 +9,7 @@ import {
      ArrowRightOutlined
      } from '@ant-design/icons';
 import LinkButton from '../../components/link-button';
-import {reqCategorys, reqUpdateCategory} from '../../api'
+import {reqCategorys, reqUpdateCategory, addCategory, reqAddCategory} from '../../api'
 
 import AddForm from './add_form'
 import UpdateForm from './update_form'
@@ -70,8 +70,25 @@ export const Category = () => {
         setShowStatus(1)
     } 
     /*确认添加分类对话框*/
-    const addCategory = () => {
-        setShowStatus(0)
+    const addCategory = async () => {
+        try{
+            const value = await form.validateFields(['newCategory']);//指定需要验证的数组，每一个都是字段name， 不指定则验证全部的字段
+            const {newCategory} = value;
+            setShowStatus(0)
+            const result = await reqAddCategory(parentId, newCategory)
+            if(result.status === 0){
+                if(parentId === "0"){
+                    //重新渲染表格
+                    getCategorys(parentId);
+                }else{
+                    getCategorys(parentId);
+                }
+                
+            }
+        }catch(err){
+            console.log(err)
+        }
+        
     } 
     /*点击修改分类按钮*/
     const showUpdateModal = (records) => {
@@ -79,18 +96,26 @@ export const Category = () => {
         categoryNameRef.current = records
         setShowStatus(2)
     } 
-    
+
+
     /*确认更新分类对话框*/ 
     const updateCategory = async () => {
-        setShowStatus(0)
-        //发请求更新数据
-       const categoryId = categoryNameRef.current._id;
-       const categoryName = form.getFieldValue('category'); //form实例在onChange的时候实时更新的，所以直接在这里就可以访问到modal中的form表单值。
-       const result = await reqUpdateCategory(categoryId, categoryName)
-       if(result.status === 0){
-            //重新渲染表格
-            getCategorys(parentId);
-       }
+        try{
+            const values = await form.validateFields(['category']);
+            setShowStatus(0)
+            //发请求更新数据
+           const categoryId = categoryNameRef.current._id;
+           const {category} = values; //form实例在onChange的时候实时更新的，所以直接在这里就可以访问到modal中的form表单值。
+           const result = await reqUpdateCategory(categoryId, category)
+           if(result.status === 0){
+                //重新渲染表格
+                getCategorys(parentId);
+           }
+        }catch(error){
+            console.log(error)
+        }
+       
+      
         
     }
     //  card左侧的标题
@@ -137,12 +162,13 @@ export const Category = () => {
                  }}
             />
             <Modal
+                forceRender
                 title="添加分类"
                 visible={showStatus===1}
                 onOk={addCategory}
                 onCancel={handleCancel}
                 >
-                <AddForm />
+                <AddForm categorys={categorys} parentId={parentId} form={form}/>
             </Modal>
             <Modal
                 forceRender //antd4 form （解决示例https://codesandbox.io/s/antd-reproduction-template-ibu5c）
@@ -152,7 +178,7 @@ export const Category = () => {
                 onCancel={handleCancel}
                 >
                 <UpdateForm categoryName={categoryNameRef.current ? categoryNameRef.current.name : ''}
-                             form={form} />
+                             form={form}  />
             </Modal>
       </Card>
     )

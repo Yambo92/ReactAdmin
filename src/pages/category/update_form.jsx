@@ -20,6 +20,9 @@ const UpdateForm = (props) => {
         >
             <Form.Item 
                 name="category"
+                rules={[
+                    {required: true, message: "字段不能为空"}
+                ]}
             >
                 <Input onChange={onChange} />
             </Form.Item>

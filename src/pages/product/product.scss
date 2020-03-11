@@ -1,0 +1,28 @@
+
+.product-detail{
+
+    .left{
+        font-weight: bold;
+        font-size:15px;
+        margin-right: 15px;
+    }
+    .right{
+        text-align: left;
+        margin-right: auto;
+    }
+    .product-img{
+        width:80px;
+        height: 60px;
+        margin-right: 10px;
+    }
+}
+
+.ant-upload-select-picture-card i {
+    color: #999;
+    font-size: 32px;
+  }
+  
+  .ant-upload-select-picture-card .ant-upload-text {
+    margin-top: 8px;
+    color: #666;
+  }

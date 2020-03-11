@@ -66,3 +66,33 @@ export const reqUpdateCategory = (categoryId, categoryName) => ajax('/manage/cat
 
 /* 根据ID查找分类 */ 
 export const reqFindCategory = (categoryId) => ajax('/manage/category/info', {categoryId})
+
+/*
+商品
+*/ 
+/*获取商品分页列表*/ 
+export const reqProducts = (pageNum, pageSize) => ajax('/manage/product/list', {pageNum, pageSize})
+
+/*根据ID/Name搜索产品分页列表 searchType的值为[productName 或者 productDesc]*/ 
+export const reqSearchProducts = ({pageNum, pageSize, searchName, searchType}) => ajax('/manage/product/search', 
+	{
+		pageNum,
+		pageSize,
+		[searchType]:searchName,
+	})
+
+/*根据分类ID获取分类*/ 
+export const reqGetCategoryName = (categoryId) => ajax('/manage/category/info', {categoryId})
+/*商品上架下架*/ 
+export const reqUpdateStatus = ({productId, status}) => ajax('/manage/product/updateStatus', {productId, status}, 'POST')
+/*删除图片*/ 
+export const reqRemovePic = (name) => ajax('/manage/img/delete', {name}, 'POST')
+
+/*添加商品*/
+export const reqAddProduct = ({
+	categoryId, pCategoryId, name, desc, price, detail, imgs
+	}) => ajax('/manage/product/add',{categoryId, pCategoryId, name, desc, price, detail, imgs}, 'POST') 
+/*更新商品*/
+export const reqUpdateProduct = ({
+	_id, categoryId, pCategoryId, name, desc, price, detail, imgs
+	}) => ajax('/manage/product/update',{_id, categoryId, pCategoryId, name, desc, price, detail, imgs}, 'POST') 

@@ -14,7 +14,7 @@ export const LeftNav = () => {
     let openKey; //获取默认sub展开菜单key;
     let menuNode; //meun节点dom
     let location = useLocation();
-    const path = location.pathname;
+    let path = location.pathname;
     /*
         根据数据数组生成标签数组(使用map和递归调用)
     */
@@ -71,7 +71,7 @@ export const LeftNav = () => {
         }else{
             //查找与当前路由匹配的子item
             
-           const cItem = item.children.find(cItem => cItem.key === path)
+           const cItem = item.children.find(cItem =>  path.indexOf(cItem.key)===0)
            //如果cItem存在说明当前item对应的子列表需要展开
             if(cItem){
                 openKey = item.key;
@@ -97,6 +97,9 @@ export const LeftNav = () => {
    }
    //由于hooks去掉了componentwillmount，所以就直接写在这里， 因为必须在挂载之前获取menudom 而且必须同步执行
     menuNode = getMenuNodes(menuList)
+    if(path.indexOf('/product')===0){
+        path = "/product"
+    }
     return (
         <div className="left-nav">
             <Link to="/">
