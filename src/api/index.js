@@ -96,3 +96,10 @@ export const reqAddProduct = ({
 export const reqUpdateProduct = ({
 	_id, categoryId, pCategoryId, name, desc, price, detail, imgs
 	}) => ajax('/manage/product/update',{_id, categoryId, pCategoryId, name, desc, price, detail, imgs}, 'POST') 
+	
+/*获取所有角色*/ 
+export const reqRoles = () => ajax('/manage/role/list')
+/*创建角色*/ 
+export const reqAddRole = (roleName) => ajax('/manage/role/add', {roleName}, 'POST')
+/*更新角色*/ 
+export const reqUpdateRole = ({_id, menus, auth_time, auth_name}) => ajax('/manage/role/update', {_id, menus, auth_time, auth_name}, 'POST')
