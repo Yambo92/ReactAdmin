@@ -3,6 +3,7 @@
 */ 
 
 import React,{useState, useEffect, useRef} from 'react'
+import {useHistory} from 'react-router-dom'
 import {Card, Button, Table,Modal, message} from 'antd'
 import {PAGE_SIZE} from '../../utils/constants'
 import {reqRoles, reqAddRole, reqUpdateRole} from '../../api'
@@ -10,9 +11,11 @@ import AddForm from './add-form';
 import AuthForm from './auth-form';
 import { useForm } from 'antd/lib/form/util';
 import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
 import {formateDate} from '../../utils/dateUtils'
 export const Role = () => {
     const [form] = useForm()
+    const history = useHistory();
     const [loading, setloading] = useState(false);
     const [modalStatus, setModalStatus] = useState(0);
     const [selectionType, setSelectionType] = useState('radio');
@@ -119,15 +122,24 @@ export const Role = () => {
             // console.log('checkedTree: ', result)
             const result = await reqUpdateRole({_id, menus, auth_name:username, auth_time:Date.now()})
             if(result.status === 0){
-                setRole(result.data)
-                setRoles((roles) => {
-                    const newRoles = roles.map((role) => (
-                        role._id === result.data._id ? result.data : role
-                    ))
-                    return newRoles
-                })
-                setModalStatus(0)
-                message.success('权限设置成功！')
+                
+                //如果当前更新的是自己角色的权限则需退出登录
+                if(role._id === memoryUtils.user.role._id){
+                    memoryUtils.user={}
+                    storageUtils.removeUser()
+                   history.replace('/login') 
+                   message.success('当前用户角色的权限修改成功，请重新登录！')
+                }else{
+                    setRole(result.data)
+                    setRoles((roles) => {
+                        const newRoles = roles.map((role) => (
+                            role._id === result.data._id ? result.data : role
+                        ))
+                        return newRoles
+                    })
+                    setModalStatus(0)
+                    message.success('权限设置成功！')
+                }
             }else{
                 setModalStatus(0)
                 message.error('权限设置失败！')
